@@ -2,6 +2,7 @@
   "name": "lazy-img",
   "version": "1.0.0",
   "description": "Lazy image wip",
+  "main": "lazy-img.js",
   "scripts": {
   },
   "author": "Ivan Čurić",
