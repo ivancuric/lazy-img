@@ -1,12 +1,4 @@
 export default class LazyImg {
-  static get SUPPORTS_INTERSECTION() {
-    return 'IntersectionObserver' in window;
-  }
-
-  static get URL() {
-    return `https://res.cloudinary.com/${this.options.accountId}/image/upload/`;
-  }
-
   static get OPTIONS() {
     return {
       maxWidth: 1920,
@@ -18,6 +10,14 @@ export default class LazyImg {
       handledClass: 'loaded',
       accountId: 'idemo',
     };
+  }
+
+  static get URL() {
+    return `https://res.cloudinary.com/${this.options.accountId}/image/upload/`;
+  }
+
+  static get SUPPORTS_INTERSECTION() {
+    return 'IntersectionObserver' in window;
   }
 
   constructor(options) {
