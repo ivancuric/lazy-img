@@ -20,8 +20,8 @@ export default class LazyImg {
     return 'IntersectionObserver' in window;
   }
 
-  constructor(options) {
-    this.options = options || LazyImg.OPTIONS;
+  constructor() {
+    this.options = LazyImg.OPTIONS;
 
     if (!LazyImg.SUPPORTS_INTERSECTION) {
       this.getImages();
@@ -138,7 +138,7 @@ export default class LazyImg {
         image.setAttribute('src', url);
         image.classList.add(this.options.handledClass);
       })
-      .catch(_ => console.error(`Image ${url} is broken.`));
+      .catch(_ => console.error(`Image ${url} is broken.`, image));
   }
 
   applyBg(image, id, width, height) {
@@ -150,6 +150,6 @@ export default class LazyImg {
         image.style.backgroundImage = `url(${url})`;
         image.classList.add(this.options.handledClass);
       })
-      .catch(_ => console.error(`Image ${url} is broken.`));
+      .catch(_ => console.error(`Image ${url} is broken.`, image));
   }
 }
