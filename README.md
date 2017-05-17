@@ -6,7 +6,7 @@ Google will index the valid default image in the `src` even it doesn't run JS on
 
 The ratio is used for setting up aspect ratio wrappers for the `<img>` to prevent page jumps.
 
-##Example markup:
+## Example markup:
 ```html
 <img class="js-lazy-img"
   src="https://res.cloudinary.com/idemo/image/upload/w_1440,c_fill,f_auto,q_auto/friends"
