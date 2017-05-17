@@ -130,7 +130,7 @@ export default class LazyImg {
   }
 
   applyImg(image, id, width) {
-    const imageParams = `w_${this.snapToGrid(width)},ar_${image.dataset.ratio},${this.options.imgParams}`;
+    const imageParams = `w_${this.snapToGrid(width)},${this.options.imgParams}`;
     const url = `${LazyImg.URL}${imageParams}${id}`;
     this.preloadImage(url)
       .then(_ => {
