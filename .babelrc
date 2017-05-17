@@ -1,0 +1,46 @@
+{
+  "env": {
+    "development": {
+      "plugins": [
+        "transform-object-rest-spread",
+        "syntax-dynamic-import"
+      ],
+      "presets": [
+        [
+          "env",
+          {
+            "targets": {
+              "browsers": [
+                "last 1 Chrome versions",
+                "last 1 Firefox versions"
+              ]
+            },
+            "modules": false,
+            "loose": true
+          }
+        ]
+      ]
+    },
+    "production": {
+      "plugins": [
+        "transform-object-rest-spread",
+        "syntax-dynamic-import"
+      ],
+      "presets": [
+        [
+          "env",
+          {
+            "useBuiltIns": true,
+            "debug": true,
+            "targets": {
+              "browsers": [
+                "last 2 versions",
+                "not ie <= 10"
+              ]
+            }
+          }
+        ]
+      ]
+    }
+  }
+}

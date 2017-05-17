@@ -1,0 +1,8 @@
+[development]
+last 1 Chrome versions
+last 1 Firefox versions
+
+[production]
+last 2 version
+not ie <= 10
+> 2%
