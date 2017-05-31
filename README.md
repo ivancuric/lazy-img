@@ -11,9 +11,9 @@ The ratio is used for setting up aspect ratio wrappers for the `<img>` to preven
 ## Example markup:
 ```html
 <img class="js-lazy-img"
-  src="https://res.cloudinary.com/idemo/image/upload/w_1440,c_fill,f_auto,q_auto/friends"
+  src="https://res.cloudinary.com/{accountName}/image/upload/w_1440,c_fill,f_auto,q_auto/{src}"
   srcset="data:image/gif;base64,R0lGODlhAQABAIAAAP///////yH5BAEKAAEALAAAAAABAAEAAAICTAEAOw"
-  data-id="friends"
+  data-src="{src}"
   alt="">
 ```
 
