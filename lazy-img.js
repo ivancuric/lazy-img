@@ -13,7 +13,7 @@ export default class LazyImg {
   }
 
   static get URL() {
-    return `https://res.cloudinary.com/${this.options.accountId}/image/upload/`;
+    return `https://res.cloudinary.com/${LazyImg.OPTIONS.accountId}/image/upload/`;
   }
 
   static get SUPPORTS_INTERSECTION() {
