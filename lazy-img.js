@@ -1,3 +1,5 @@
+import { preloadImage } from './utils';
+
 export default class LazyImg {
   static get OPTIONS() {
     return {
@@ -5,7 +7,7 @@ export default class LazyImg {
       column: 80,
       gutter: 28,
       imgParams: ['c_fill', 'f_auto', 'q_auto'].join(),
-      bgParams: ['c_fit', 'f_auto', 'q_auto'].join(),
+      bgParams: ['c_fill', 'f_auto', 'q_auto'].join(),
       className: '.js-lazy-img',
       handledClass: 'loaded',
       accountId: 'idemo',
@@ -16,20 +18,14 @@ export default class LazyImg {
     return `https://res.cloudinary.com/${LazyImg.OPTIONS.accountId}/image/upload/`;
   }
 
-  static get SUPPORTS_INTERSECTION() {
+  static get SUPPORTS_INTERSECTION_OBSERVER() {
     return 'IntersectionObserver' in window;
   }
 
   constructor() {
     this.options = LazyImg.OPTIONS;
 
-    if (!LazyImg.SUPPORTS_INTERSECTION) {
-      this.getImages();
-      this.loadAll(this.images);
-      return;
-    }
-
-    this.initObserver();
+    this.getImages();
   }
 
   preloadImage(url) {
@@ -42,7 +38,13 @@ export default class LazyImg {
   }
 
   getImages() {
-    this.images = [...document.querySelectorAll(this.options.className)];
+    this.images = [...document.querySelectorAll('.js-lazy-load')];
+    if (!LazyImg.SUPPORTS_INTERSECTION_OBSERVER) {
+      this.loadAll(this.images);
+      return;
+    }
+
+    this.initObserver();
   }
 
   initObserver() {
@@ -50,7 +52,6 @@ export default class LazyImg {
       this.observer.disconnect();
     }
 
-    this.onIntersection = this.onIntersection.bind(this);
     const intersectionConfig = {
       threshold: 0.01,
     };
@@ -60,7 +61,6 @@ export default class LazyImg {
       intersectionConfig
     );
 
-    this.getImages();
     this.observeImages();
   }
 
@@ -75,7 +75,7 @@ export default class LazyImg {
     });
   }
 
-  onIntersection(entries) {
+  onIntersection = entries => {
     entries.forEach(entry => {
       if (entry.intersectionRatio <= 0) {
         return;
@@ -89,7 +89,7 @@ export default class LazyImg {
     if (this.count === 0) {
       this.observer.disconnect();
     }
-  }
+  };
 
   snapToGrid(renderWidth) {
     const colCalc = n =>
@@ -97,10 +97,11 @@ export default class LazyImg {
     let ncols = 1;
     let snapWidth = 0;
     while (snapWidth < this.options.maxWidth) {
-      snapWidth = colCalc(++ncols);
-      if (renderWidth - snapWidth < colCalc(1)) {
-        return snapWidth;
+      snapWidth = colCalc(ncols);
+      if (renderWidth - snapWidth <= 0) {
+        return colCalc(ncols);
       }
+      ncols++;
     }
     return this.options.maxWidth;
   }
@@ -114,7 +115,7 @@ export default class LazyImg {
       return;
     }
 
-    const id = image.dataset.id;
+    const id = image.dataset.src;
 
     if (!id) {
       return;
@@ -130,26 +131,31 @@ export default class LazyImg {
   }
 
   applyImg(image, id, width) {
-    const imageParams = `w_${this.snapToGrid(width)},${this.options.imgParams}`;
-    const url = `${LazyImg.URL}${imageParams}${id}`;
-    this.preloadImage(url)
+    const imageParams = [
+      'w_' + this.snapToGrid(width),
+      LazyImg.IMG_PARAMS,
+      image.dataset.ratio && 'ar_' + image.dataset.ratio,
+    ].join(',');
+
+    const url = `${LazyImg.URL}/${imageParams}/${id}`;
+    preloadImage(url)
       .then(_ => {
         image.removeAttribute('srcset');
         image.setAttribute('src', url);
         image.classList.add(this.options.handledClass);
       })
-      .catch(_ => console.error(`Image ${url} is broken.`, image));
+      .catch(_ => console.error(`Image ${url} is broken`));
   }
 
   applyBg(image, id, width, height) {
-    const imageParams = `w_${this.snapToGrid(width)},h_${height > 1000 ? 1000 : 100 * Math.round(height / 100)},${this.options.bgParams}`;
-    const url = `${LazyImg.URL}${imageParams}${id}`;
+    const imageParams = `w_${this.snapToGrid(width)},h_${height > 1000 ? 1000 : 100 * Math.round(height / 100)},${LazyImg.BG_PARAMS}`;
+    const url = `${LazyImg.URL}/${imageParams}/${id}`;
 
-    this.preloadImage(url)
+    preloadImage(url)
       .then(_ => {
         image.style.backgroundImage = `url(${url})`;
         image.classList.add(this.options.handledClass);
       })
-      .catch(_ => console.error(`Image ${url} is broken.`, image));
+      .catch(_ => console.error(`Image ${url} is broken`));
   }
 }
