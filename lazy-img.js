@@ -28,15 +28,6 @@ export default class LazyImg {
     this.getImages();
   }
 
-  preloadImage(url) {
-    return new Promise((resolve, reject) => {
-      const image = new Image();
-      image.src = url;
-      image.onload = resolve;
-      image.onerror = reject;
-    });
-  }
-
   getImages() {
     this.images = [...document.querySelectorAll('.js-lazy-load')];
     if (!LazyImg.SUPPORTS_INTERSECTION_OBSERVER) {
