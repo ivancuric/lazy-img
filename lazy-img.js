@@ -26,7 +26,6 @@ export default class LazyImg {
     this.getImages();
   }
 
-<<<<<<< HEAD
   preloadImage(url) {
     return new Promise((resolve, reject) => {
       const image = new Image();
@@ -36,8 +35,6 @@ export default class LazyImg {
     });
   }
 
-=======
->>>>>>> 2e6179f5cca72effea807d6215e9cd4889ccb202
   getImages() {
     this.images = [...document.querySelectorAll('.js-lazy-load')];
     if (!LazyImg.SUPPORTS_INTERSECTION_OBSERVER) {
