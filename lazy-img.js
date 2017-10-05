@@ -1,5 +1,3 @@
-import { preloadImage } from './utils';
-
 export default class LazyImg {
   static get OPTIONS() {
     return {
@@ -32,8 +30,8 @@ export default class LazyImg {
     return new Promise((resolve, reject) => {
       const image = new Image();
       image.src = url;
-      image.onload = resolve;
-      image.onerror = reject;
+      image.onload = () => resolve(image);
+      image.onerror = () => reject(new Error('Could not load image at ' + url));
     });
   }
 
@@ -138,7 +136,7 @@ export default class LazyImg {
     ].join(',');
 
     const url = `${LazyImg.URL}/${imageParams}/${id}`;
-    preloadImage(url)
+    this.preloadImage(url)
       .then(_ => {
         image.removeAttribute('srcset');
         image.setAttribute('src', url);
@@ -151,7 +149,7 @@ export default class LazyImg {
     const imageParams = `w_${this.snapToGrid(width)},h_${height > 1000 ? 1000 : 100 * Math.round(height / 100)},${LazyImg.BG_PARAMS}`;
     const url = `${LazyImg.URL}/${imageParams}/${id}`;
 
-    preloadImage(url)
+    this.preloadImage(url)
       .then(_ => {
         image.style.backgroundImage = `url(${url})`;
         image.classList.add(this.options.handledClass);

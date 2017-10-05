@@ -18,8 +18,7 @@
                 "last 1 Safari versions"
               ]
             },
-            "modules": false,
-            "loose": true
+            "modules": false
           }
         ]
       ]
@@ -29,16 +28,7 @@
         "transform-object-rest-spread",
         "transform-class-properties",
         "syntax-dynamic-import",
-        "transform-decorators-legacy",
-        [
-          "transform-imports",
-          {
-            "lodash": {
-              "transform": "lodash/${member}",
-              "preventFullImport": true
-            }
-          }
-        ]
+        "transform-decorators-legacy"
       ],
       "presets": [
         [
